@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   One token block. Re-theme a whole project by editing these six
+   values -- nothing else in the app hardcodes a colour.
+   --------------------------------------------------------------- */
+@theme {
+  --color-ink: #14161c;
+  --color-slate: #5b6473;
+  --color-mist: #f4f5f7;
+  --color-line: #e1e4e9;
+  --color-accent: #2b50e0;
+  --color-warn: #b4342b;
+
+  --font-sans: "Public Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background: var(--color-mist);
+  }
+
+  code {
+    font-size: 0.9em;
+  }
+}
+
+/* Visible focus ring for keyboard users, nothing for mouse users. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
