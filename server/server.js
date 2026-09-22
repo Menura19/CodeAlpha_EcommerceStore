@@ -1,4 +1,4 @@
-import express from 'express';
+ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
@@ -17,8 +17,6 @@ connectDB();
 
 const app = express();
 
-// Only allow the origins you actually deploy.
-// Never use '*' with credentials.
 const allowedOrigins = (
   process.env.CLIENT_URL || 'http://localhost:5173'
 )
@@ -28,32 +26,34 @@ const allowedOrigins = (
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow Postman/curl requests with no origin
-      // and allow frontend URLs listed in CLIENT_URL.
       if (!origin || allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
 
-      callback(
+      return callback(
         new Error(`Origin ${origin} is not allowed by CORS.`)
       );
     },
-
     credentials: true,
   })
 );
 
-// Parse JSON request bodies
 app.use(express.json({ limit: '1mb' }));
 
-// Parse URL-encoded form data
 app.use(
   express.urlencoded({
     extended: true,
   })
 );
 
-// Health check route
+// Root route
+app.get('/', (req, res) => {
+  res.json({
+    message: 'CodeAlpha E-commerce API is running',
+  });
+});
+
+// Health check
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
@@ -61,25 +61,28 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Authentication routes
+// Routes
 app.use('/api/auth', authRoutes);
-
-// Product routes
 app.use('/api/products', productRoutes);
-
-// Order routes
 app.use('/api/orders', orderRoutes);
 
-// Error handling middleware
+// Error handlers
 app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(
-    `Server running in ${
-      process.env.NODE_ENV || 'development'
-    } on port ${PORT}`
-  );
-});
+// Run normally on your computer.
+// Vercel handles the server when deployed.
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(
+      `Server running in ${
+        process.env.NODE_ENV || 'development'
+      } on port ${PORT}`
+    );
+  });
+}
+
+// Export Express app for Vercel
+export default app;
