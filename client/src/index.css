@@ -1,46 +1,68 @@
 @import "tailwindcss";
 
-/* ---------------------------------------------------------------
-   One token block. Re-theme a whole project by editing these six
-   values -- nothing else in the app hardcodes a colour.
-   --------------------------------------------------------------- */
 @theme {
-  --color-ink: #14161c;
-  --color-slate: #5b6473;
-  --color-mist: #f4f5f7;
-  --color-line: #e1e4e9;
-  --color-accent: #2b50e0;
-  --color-warn: #b4342b;
+  --color-ink: #0f172a;
+  --color-slate: #64748b;
+  --color-mist: #f8fafc;
+  --color-line: #e2e8f0;
+  --color-accent: #2563eb;
+  --color-warn: #dc2626;
 
-  --font-sans: "Public Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: "Inter", "Public Sans", ui-sans-serif, system-ui,
+    -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 @layer base {
+  * {
+    box-sizing: border-box;
+  }
+
   html {
+    scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
   }
 
   body {
     margin: 0;
+    min-width: 320px;
     font-family: var(--font-sans);
     color: var(--color-ink);
     background: var(--color-mist);
   }
 
-  code {
-    font-size: 0.9em;
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
   }
 }
 
-/* Visible focus ring for keyboard users, nothing for mouse users. */
+::selection {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
-  border-radius: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
